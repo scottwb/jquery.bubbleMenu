@@ -41,10 +41,6 @@
 
 
     ////////////////////////////////////////////////////////////
-    // Private Methods
-    ////////////////////////////////////////////////////////////
-
-    ////////////////////////////////////////////////////////////
     // Public Methods
     ////////////////////////////////////////////////////////////
     var publicMethods = {
@@ -55,15 +51,26 @@
             // Create the menu.
             var menu = $('<ul></ul>').addClass('bubbleMenu')
                                      .attr('style', 'display:none;');
+            var i = 0;
             $.each(config.menuOptions, function(i, option) {
-                var li = menu.append(
-                    $('<li></li>').append(
-                        $('<a></a>').attr(option.link).text(option.name)
-                    )
-                );
+                var a = $('<a></a>').attr(option.link)
+                                    .text(option.name)
+                                    .click(function() {
+                                        if ($(this).hasClass('selected')) {
+                                            if (config.onSelect) {
+                                                config.onDeselect(option);
+                                            }
+                                        }
+                                        else {
+                                            if (config.onDeselect) {
+                                                config.onSelect(option);
+                                            }
+                                        }
+                                    });
                 if (option.selected) {
-                    li.addClass('selected');
+                    a.addClass('selected');
                 }
+                menu.append($('<li></li>').append(a));
             });
             $this.after(menu);
 
@@ -143,7 +150,7 @@
     ////////////////////////////////////////////////////////////
     $.fn[PLUGIN_NAME].defaults = {
 
-        // An Array of objects, each of which defines an option in the menu.
+        // An array of objects, each of which defines an option in the menu.
         // Each of thise objects uses the following properties:
         //
         //   name : The name that will be displayed for the option.
@@ -160,6 +167,25 @@
         //              not the option should be shown as being selected.
         //              Defaults to false.
         //
-        menuOptions : []
+        // Any other arbitrary properties stuck in here will be ignored,
+        // but will be passed back in the onSelect and onDeselect callbacks.
+        menuOptions : [],
+
+        // An optional function that will get called when a menu option
+        // is selected. This function will be passed one parameter that
+        // is the menuOption object (from the menuOptions array) that was
+        // selected.
+        onSelect: null,
+
+        // An optional function that will get called when a menu option
+        // is de-selected. This function will be passed one parameter that
+        // is the menuOption object (from the menuOptions array) that was
+        // selected.
+        //
+        // NOTE: This does not get called when the option is implicitly
+        //       de-selected due to another option being selected. It only
+        //       gets called when a currently-selected option is explicitly
+        //       de-selected.
+        onDeselect: null
     };
 })(jQuery);
