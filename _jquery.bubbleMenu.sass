@@ -1,0 +1,59 @@
+
+// REVISIT: Should factor out this mixin for more general use outside of
+//          the jquery.bubbleMenu plugin.
+=top-border-triangle($size, $pos, $border_width, $border_color, $background_color)
+  position: absolute
+  &:before
+    content: ""
+    display: block
+    position: absolute
+    top: 0px - (2 * $size)
+    left: $pos - ($size)
+    width: 0
+    height: 0
+    border: $size solid transparent
+    border-bottom-color: $border_color
+    pointer-events: none
+  &:after
+    content: ""
+    display: block
+    position: absolute
+    top: 0px - (2 * ($size - $border_width))
+    left: $pos - ($size) + $border_width
+    width: 0
+    height: 0
+    border: ($size - $border_width) solid transparent
+    border-bottom-color: $background_color
+    pointer-events: none
+
+ul.bubbleMenu
+  z-index: 9999
+  background-color: white
+  border: solid #ccc 3px
+  margin: 0px
+  margin-top: 15px
+  padding: 5px
+  width: 90px
+  +top-border-triangle(15px, 50px, 4px, #ccc, white)
+  
+  li
+    list-style: none
+    padding: 0px
+    a
+      color: black
+      display: block
+      box-sizing: border-box
+      -webkit-box-sizing: border-box
+      -mox-box-sizing: border-box
+      -ms-box-sizing: border-box
+      width: 100%
+      padding:
+        top: 4px
+        bottom: 4px
+        left: 6px
+        right: 6px
+      &:hover, &.selected
+        text-decoration: none
+        background-color: #eee
+        cursor: pointer
+        font-weight: bold
