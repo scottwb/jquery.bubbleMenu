@@ -51,7 +51,6 @@
             // Create the menu.
             var menu = $('<ul></ul>').addClass('bubbleMenu')
                                      .attr('style', 'display:none;');
-            var i = 0;
             $.each(config.menuOptions, function(i, option) {
                 var a = $('<a></a>').attr(option.link)
                                     .text(option.name)
