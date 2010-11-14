@@ -1,6 +1,6 @@
 # jquery.bubbleMenu
 
-A simple jQuery plugin to pop up a <ul>-based menu when a given element
+A simple jQuery plugin to pop up a &lt;ul&gt;-based menu when a given element
 is clicked. You can style this popup anyway you like. The default style just
 has a box with a "speech bubble triangle" on top, positioned to the center
 of the element this is attached to.
