@@ -73,21 +73,26 @@
             });
             $this.after(menu);
 
-            // Position the menu so its "top center" is aligned with
-            // the target's "center".
-            //
-            // REVISIT: If we updated to a later jQuery/UI we could:
-            //
-            //            menu.position({
-            //              my: "top center",
-            //              at: "center",
-            //              of: $this
-            //            });
-            //
-            var menuX = $this.offset().left + ($this.outerWidth() / 2);
-            var menuY = $this.offset().top + ($this.outerHeight() / 2);
-            menuX -= (menu.outerWidth() / 2);
-            menu.css({left:menuX, top:menuY});
+            if (config.positionMenu) {
+                config.positionMenu($this, menu);
+            }
+            else {
+                // Position the menu so its "top center" is aligned with
+                // the target's "center".
+                //
+                // REVISIT: If we updated to a later jQuery/UI we could:
+                //
+                //            menu.position({
+                //              my: "top center",
+                //              at: "center",
+                //              of: $this
+                //            });
+                //
+                var menuX = $this.offset().left + ($this.outerWidth() / 2);
+                var menuY = $this.offset().top + ($this.outerHeight() / 2);
+                menuX -= (menu.outerWidth() / 2);
+                menu.css({left:menuX, top:menuY});
+            }
 
             // Show/hide menu on click.
             $this.click(function() {
@@ -185,6 +190,18 @@
         //       de-selected due to another option being selected. It only
         //       gets called when a currently-selected option is explicitly
         //       de-selected.
-        onDeselect: null
+        onDeselect: null,
+
+        // An optional function that will get called to set the position of
+        // the popup menu. If omitted, a default positioning algorithm
+        // will be used. This function is passed two parameters when the
+        // menu popup is created:
+        //
+        //   positionMenu(
+        //     target,       // The target element that was clicked
+        //     menu          // The menu <ul> to be positioned
+        //   )
+        //
+        positionMenu: null
     };
 })(jQuery);
