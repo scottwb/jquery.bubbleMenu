@@ -73,26 +73,28 @@
             });
             $this.after(menu);
 
-            if (config.positionMenu) {
-                config.positionMenu($this, menu);
-            }
-            else {
-                // Position the menu so its "top center" is aligned with
-                // the target's "center".
-                //
-                // REVISIT: If we updated to a later jQuery/UI we could:
-                //
-                //            menu.position({
-                //              my: "top center",
-                //              at: "center",
-                //              of: $this
-                //            });
-                //
-                var menuX = $this.offset().left + ($this.outerWidth() / 2);
-                var menuY = $this.offset().top + ($this.outerHeight() / 2);
-                menuX -= (menu.outerWidth() / 2);
-                menu.css({left:menuX, top:menuY});
-            }
+            var positionMenu = function() {
+              if (config.positionMenu) {
+                  config.positionMenu($this, menu);
+              }
+              else {
+                  // Position the menu so its "top center" is aligned with
+                  // the target's "center".
+                  //
+                  // REVISIT: If we updated to a later jQuery/UI we could:
+                  //
+                  //            menu.position({
+                  //              my: "top center",
+                  //              at: "center",
+                  //              of: $this
+                  //            });
+                  //
+                  var menuX = $this.offset().left + ($this.outerWidth() / 2);
+                  var menuY = $this.offset().top + ($this.outerHeight() / 2);
+                  menuX -= (menu.outerWidth() / 2);
+                  menu.css({left:menuX, top:menuY});
+              }
+            };
 
             // Show/hide menu on click.
             $this.click(function() {
@@ -100,6 +102,7 @@
                     menu.hide();
                 }
                 else {
+                    positionMenu();
                     menu.fadeIn(
                         'fast',
                         function() {
