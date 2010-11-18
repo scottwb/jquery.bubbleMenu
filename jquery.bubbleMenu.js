@@ -52,9 +52,34 @@
             var menu = $('<ul></ul>').addClass('bubbleMenu')
                                      .attr('style', 'display:none;');
             $.each(config.menuOptions, function(i, option) {
+                // NOTE: attr(option.link) may not work for the 'onclick'
+                //       member of option.link on some browsers. I observed
+                //       that it worked on FF 3.6 and Failed on Chrome 6.
+                //       To workaround that, we'll pull out option.link.onclick
+                //       and add it in separately.
+                var onclick = null;
+                if (option.link && option.link.onclick) {
+                    onclick = option.link.onclick;
+                    delete option.link.onclick;
+                }
                 var a = $('<a></a>').attr(option.link)
                                     .text(option.name)
                                     .click(function() {
+                                        if (onclick) {
+                                            // NOTE: We have to eval onclick
+                                            //       since it is a string.
+                                            //
+                                            //       We have to wrap it in
+                                            //       a function to eat any
+                                            //       return statement found in
+                                            //       onclick.
+                                            eval(
+                                                'var onclickFn = function(){' +
+                                                 onclick                      +
+                                                '}'
+                                            );
+                                            onclickFn.call(this);
+                                        }
                                         if ($(this).hasClass('selected')) {
                                             if (config.onSelect) {
                                                 config.onDeselect(option);
