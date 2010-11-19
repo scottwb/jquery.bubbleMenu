@@ -124,14 +124,23 @@
             // Show/hide menu on click.
             $this.click(function() {
                 if (menu.is(':visible')) {
+                    if (config.onClose) {
+                        config.onClose();
+                    }
                     menu.hide();
                 }
                 else {
                     positionMenu();
+                    if (config.onOpen) {
+                        config.onOpen();
+                    }
                     menu.fadeIn(
                         'fast',
                         function() {
                             var clickAnywhereToClose = function(e) {
+                                if (config.onClose) {
+                                    config.onClose();
+                                }
                                 menu.hide();
                                 $(document).unbind('click', clickAnywhereToClose);
                                 return true;
@@ -202,6 +211,14 @@
         // Any other arbitrary properties stuck in here will be ignored,
         // but will be passed back in the onSelect and onDeselect callbacks.
         menuOptions : [],
+
+        // An optional function that will get called when the popup menu
+        // is about to be opened. This function is not passed any parameters.
+        onOpen: null,
+
+        // An optional function that will get called when the popup menu
+        // is about to be closed. This function is not passed any parameters.
+        onClose: null,
 
         // An optional function that will get called when a menu option
         // is selected. This function will be passed one parameter that
