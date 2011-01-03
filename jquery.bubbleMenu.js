@@ -30,7 +30,6 @@
  *   [ ] Factor out CSS/triangles into compass helpers.
  *   [ ] Build out Sass/Compass/CSS stuff to make this completely
  *       self-contained.
- *   [ ] Build out a unit-test/example page.
  */
 (function($) {
 
@@ -81,12 +80,12 @@
                                             onclickFn.call(this);
                                         }
                                         if ($(this).hasClass('selected')) {
-                                            if (config.onSelect) {
+                                            if (config.onDeselect) {
                                                 config.onDeselect(option);
                                             }
                                         }
                                         else {
-                                            if (config.onDeselect) {
+                                            if (config.onSelect) {
                                                 config.onSelect(option);
                                             }
                                         }
